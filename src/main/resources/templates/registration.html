@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head th:replace="parts/header :: head"></head>
+
+<body>
+  <header th:replace="parts/header :: header"></header>
+
+  <!-- Start Of Content -->
+  <main class="form-signup">
+    <form class="row g-3 needs-validation" action="/sign-up" method="post" th:object="${user}"
+      enctype="multipart/form-data">
+      <h1 class="h3 mb-3 fw-normal">Регистрация</h1>
+
+      <div class="col-md-6 position-relative">
+        <label for="validationTooltip01" class="form-label">Имя <span class="text-danger">*</span> </label>
+        <input type="text" class="form-control" id="validationTooltip01" required th:field="*{firstName}">
+      </div>
+      <div class="col-md-6 position-relative">
+        <label for="validationTooltip02" class="form-label">Фамилия<span class="text-danger">*</span> </label>
+        <input type="text" class="form-control" id="validationTooltip02" required th:field="*{lastName}">
+      </div>
+      <div class="col-md-8 position-relative">
+        <label class="form-label" for="inputGroupFile01">Фото профиля</label>
+        <input type="file" name="file" class="form-control" id="inputGroupFile01">
+      </div>
+      <div class="col-md-4 position-relative">
+        <label for="validationTooltip02" class="form-label">Дата рождения<span class="text-danger">*</span> </label>
+        <input type="date" class="form-control" id="validationTooltip02" required name="inputDate" autocomplete="off" inputmode="numeric">
+      </div>
+      <div class="col-md-4 position-relative">
+        <label for="validationTooltipUsername" class="form-label">Логин<span class="text-danger">*</span> </label>
+        <div class="input-group has-validation">
+          <input type="text" class="form-control" id="validationTooltipUsername" required th:field="*{username}">
+          <div class="invalid-tooltip">
+            <p th:text="${existError}">Validation error</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 position-relative">
+        <label for="validationTooltipPassword" class="form-label">Пароль<span class="text-danger">*</span> </label>
+        <input type="password" class="form-control" th:classappend="${isVerificationError} ? is-invalid : ''"
+          id="validationTooltipPassword" required th:field="*{password}">
+        <div class="invalid-tooltip">
+          <p>Пароли не совпадают</p>
+        </div>
+      </div>
+      <div class="col-md-4 position-relative">
+        <label for="validationTooltipPasswordVerification" class="form-label">Подтвердите пароль<span
+            class="text-danger">*</span> </label>
+        <input type="password" class="form-control" th:classappend="${isVerificationError} ? is-invalid : ''"
+          id="validationTooltipPasswordVerification" name="passwordVerification" required>
+        <div class="invalid-tooltip">
+          <p>Пароли не совпадают</p>
+        </div>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-primary mt-3 mb-3" type="submit">Зарегистрироваться</button>
+      </div>
+    </form>
+  </main>
+  <!-- End Of Content -->
+
+  <footer th:replace="parts/footer :: footer"></footer>
+  <div th:replace="parts/footer :: scripts"></div>
+</body>
+
+</html>

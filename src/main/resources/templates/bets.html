@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head th:replace="parts/header :: head"></head>
+
+<body>
+    <header th:replace="parts/header :: header"></header>
+
+    <!-- Start Of Content -->
+    <main class="row container pt-5 pb-5">
+        <h1>Ставки</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Команда</th>
+                    <th scope="col">Сумма</th>
+                    <th scope="col">Коэффициент</th>
+                    <th scope="col">Дата</th>
+                    <th scope="col">Результат</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="bet : ${bets}">
+                    <th th:text="${bet.id}" scope="row">1</th>
+                    <th th:text="${bet.team.name}">1</th>
+                    <th th:text="${bet.betValue}">1</th>
+                    <th th:text="${bet.betCoefficient}">1</th>
+                    <th th:text="${bet.betDate}">1</th>
+                    <th th:text="${bet.result.name}">1</th>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+    <!-- End Of Content -->
+
+    <footer th:replace="parts/footer :: footer"></footer>
+    <div th:replace="parts/footer :: scripts"></div>
+</body>
+
+</html>

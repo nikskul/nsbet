@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head th:replace="parts/header :: head"></head>
+
+<body>
+    <header th:replace="parts/header :: header"></header>
+
+    <!-- Start Of Content -->
+    <main class="form-signin">
+        <form action="/login" method="post">
+            <img class="mb-4" th:src="@{/images/bootstrap-logo.svg}" alt="" width="72" height="57">
+            <h1 class="h3 mb-3 fw-normal">Пожалуйста, авторизуйтесь!</h1>
+
+            <div class="form-floating">
+                <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Логин">
+                <label for="floatingInput">Логин</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Пароль">
+                <label for="floatingPassword">Пароль</label>
+            </div>
+            
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Войти</button>
+        </form>
+    </main>
+    <!-- End Of Content -->
+
+    <footer th:replace="parts/footer :: footer"></footer>
+    <div th:replace="parts/footer :: scripts"></div>
+</body>
+</html>

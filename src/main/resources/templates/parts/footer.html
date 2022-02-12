@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<body>
+    <footer th:fragment="footer">
+        <p class="text-muted">&copy; 2021 NSkul</p>
+    </footer>
+</body>
+
+<th:block th:fragment="scripts">
+    <!-- JQuery v3.6.0 -->
+    <script th:src="@{/main/js/JQuery_v3.6.0.min.js}"></script>
+    <!-- Bootstrap JS -->
+    <script th:src="@{/main/js/popper.min.js}"></script>
+    <!-- Bootstrap JS -->
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</th:block>
+
+</html>

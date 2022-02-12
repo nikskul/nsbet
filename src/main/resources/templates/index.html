@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head th:replace="parts/header :: head"></head>
+
+<body>
+  <header th:replace="parts/header :: header"></header>
+
+  <!-- Start Of Content -->
+  <main class="row container pt-5 pb-5">
+    <h1>Главная страница</h1>
+    <section class="row mt-5">
+      <div th:each="match : ${matches}" class="card m-3" style="max-width: 20rem;">
+        <div class="card-body">
+
+          <h5 class="card-title">
+            <span th:text="${match.teams[0].name}">TEAM 1</span> vs.
+            <span th:text="${match.teams[1].name}">TEAM 2</span>
+          </h5>
+
+          <hr />
+
+          <p th:text="${#dates.format(match.time, 'dd MMMM HH:mm')}" class="card-text">Время матча</span></p>
+
+          <a th:if="${!match.time.before(#dates.createNow())}" th:href="'/matches/' + ${match.id}"
+            class="btn btn-primary">Открыть матч</a>
+
+          <h6 th:if="${match.teams[0].results.size > 0}">
+            Результат 
+            <span class="badge bg-success">Победа</span>
+            <span th:text="${match.teams[0].name}">TEAM</span>
+          </h6>
+
+          <h6 th:if="${match.teams[1].results.size > 0}">
+            Результат 
+            <span class="badge bg-success">Победа</span>
+            <span th:text="${match.teams[1].name}">TEAM</span>
+          </h6>
+
+          <h6 th:if="${match.time.before(#dates.createNow()) and match.teams[0].results.size == 0 and match.teams[1].results.size == 0}">
+            Результат 
+            <span class="badge bg-secondary">Ничья</span>
+          </h6>
+
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- End Of Content -->
+
+  <footer th:replace="parts/footer :: footer"></footer>
+  <div th:replace="parts/footer :: scripts"></div>
+</body>
+
+</html>

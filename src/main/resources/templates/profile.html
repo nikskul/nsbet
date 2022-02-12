@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head th:replace="parts/header :: head"></head>
+
+<body>
+    <header th:replace="parts/header :: header"></header>
+
+    <!-- Start Of Content -->
+    <main class="profile mt-5 row container text-center">
+        <h1>Профиль</h1>
+        <section class="row mt-5 justify-content-md-center">
+            <div class="col-auto">
+                <div>
+                    <img class="rounded mx-auto d-block" width="400" height="400"
+                        th:src="'/avatars/' + ${user.avatar.id}" alt="avatar">
+                </div>
+                <div class="input-group mt-3">
+                    <form class="input-group" th:action="@{profile/avatar}" method="post" enctype="multipart/form-data">
+                        <button class="btn btn-outline-secondary" type="submit"
+                            id="inputGroupFileAddon">Обновить</button>
+                        <input type="file" name="file" class="form-control " id="inputGroupFile" required>
+                    </form>
+                </div>
+            </div>
+            <div class="col-auto text-start">
+                <div>
+                    <h4 class="fw-bold mb-0">Имя</h4>
+                    <p th:text="${user.firstName}">Имя</p>
+                </div>
+                <div>
+                    <h4 class="fw-bold mb-0">Фамилия</h4>
+                    <p th:text="${user.lastName}">Фамилия</p>
+                </div>
+                <div>
+                    <h4 class="fw-bold mb-0">Дата рождения</h4>
+                    <p th:text="${#dates.format(user.birthday, 'dd MMMM yyyy')}">01.01.1900</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    <!-- End Of Content -->
+
+    <footer th:replace="parts/footer :: footer"></footer>
+    <div th:replace="parts/footer :: scripts"></div>
+</body>
+
+</html>

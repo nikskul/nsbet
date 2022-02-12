@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head th:replace="parts/header :: head"></head>
+
+<body>
+    <header th:replace="parts/header :: header"></header>
+
+    <!-- Start Of Content -->
+    <main class="row container pt-5 pb-5">
+        <h1>Ставки</h1>
+        <form class="row g-3 needs-validation" action="/bets" method="post" enctype="utf-8">
+            <h5 class="h5 mb-3 fw-normal">Ставка на результат</h5>
+
+            <div class="row text-center">
+                <div class="form_radio_btn col-auto">
+                    <input id="radioWin" class="form-check-input mt-0" type="radio" name="userChoice" value="1" required>
+                    <label for="radioWin">
+                        <span th:text="${match.teams[0].name}">Team</span>
+                        <hr class="m-0">
+                        <span>x2</span>
+                    </label>
+                </div>
+                <div class="form_radio_btn col-auto">
+                    <input id="radioDraw" class="form-check-input mt-0" type="radio" name="userChoice" value="2" required>
+                    <label for="radioDraw">
+                        Ничья
+                        <hr class="m-0"><span>x1.25</span>
+                    </label>
+                </div>
+                <div class="form_radio_btn col-auto">
+                    <input id="radioLose" class="form-check-input mt-0" type="radio" name="userChoice" value="3" required>
+                    <label for="radioLose">
+                        <span th:text="${match.teams[1].name}">Team</span>
+                        <hr class="m-0">
+                        <span>x2</span>
+                    </label>
+                </div>
+                <input class="d-none" name="matchId" th:value="${match.id}">
+            </div>
+
+            <div class="row mt-3">
+                <label for="betValueInput" class="form-label">
+                    Величина ставки<span class="text-danger">*</span>
+                </label>
+                <p th:if="${param.error}" class="text-danger">Ставка невозможна</p>
+                <div class="input-group col-md-4" style="width: auto;">
+                    <span class="input-group-text">₽</span>
+                    <input type="text" class="form-control col-md-4" name="betValue" id="betValueInput" required>
+                    <span class="input-group-text">.00</span>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <button th:if="${!match.time.before(#dates.createNow())}" class="btn btn-primary mt-3 mb-3" type="submit">Сделать ставку</button>
+            </div>
+        </form>
+    </main>
+    <!-- End Of Content -->
+
+    <footer th:replace="parts/footer :: footer"></footer>
+    <div th:replace="parts/footer :: scripts"></div>
+</body>
+
+</html>
