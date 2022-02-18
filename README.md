@@ -1,4 +1,4 @@
 # Курсовой проект "Прием ставок на спортивные события"
-— Spring
-— Thymeleaf
-— MVC
++ Spring
++ Thymeleaf
++ MVC
