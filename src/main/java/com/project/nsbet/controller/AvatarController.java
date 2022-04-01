@@ -36,8 +36,7 @@ public class AvatarController {
         this.avatarService = avatarService;
     }
 
-    
-    /** 
+    /**
      * Сохраняет файл в БД
      * @param file Файл
      * @return ResponseEntity<String>
@@ -55,7 +54,6 @@ public class AvatarController {
         }
     }
 
-    
     /** 
      * Возвращает список файлов из БД
      * @return List<AvatarResponse>
@@ -68,7 +66,6 @@ public class AvatarController {
                 .collect(Collectors.toList());
     }
 
-    
     /** 
      * Обработка файла в представление
      * @param avatar Аватарка
@@ -89,7 +86,6 @@ public class AvatarController {
         return avatarResponse;
     }
 
-    
     /** 
      * Возвращает файл
      * @param id Идентификатор файла

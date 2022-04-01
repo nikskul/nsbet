@@ -14,9 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-/**
- * Модель матча
- */
 @Entity
 @Table(name = "Matches")
 public class Match {
@@ -25,9 +22,7 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "match_id")
     private Long id;
-
     private Date time;
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Team> teams;
 
@@ -35,50 +30,26 @@ public class Match {
         teams = new ArrayList<Team>();
     }
 
-    
-    /** 
-     * @return Long
-     */
     public Long getId() {
         return id;
     }
 
-    
-    /** 
-     * @param id Идентификатор
-     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    
-    /** 
-     * @return Date
-     */
     public Date getTime() {
         return time;
     }
 
-    
-    /** 
-     * @param time Дата матча
-     */
     public void setTime(Date time) {
         this.time = time;
     }
 
-    
-    /** 
-     * @return List<Team>
-     */
     public List<Team> getTeams() {
         return teams;
     }
 
-    
-    /** 
-     * @param teams Команды
-     */
     public void setTeams(List<Team> teams) {
         this.teams = teams;
     }

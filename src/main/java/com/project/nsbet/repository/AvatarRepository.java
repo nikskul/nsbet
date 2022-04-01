@@ -8,6 +8,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AvatarRepository extends JpaRepository<Avatar, String> {
     
-    public Avatar findByName(String name);
-    
 }

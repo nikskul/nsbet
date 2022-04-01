@@ -37,7 +37,6 @@ public class BetController {
         this.resultService = resultService;
     }
 
-    
     /** 
      * Загружает страницу ставок
      * @param model Представление страницы
@@ -61,7 +60,6 @@ public class BetController {
         return "bets";
     }
 
-    
     /** 
      * Создает ставку
      * @param matchId ИД матча

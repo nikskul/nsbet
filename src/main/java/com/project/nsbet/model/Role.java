@@ -12,9 +12,6 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 
-/**
- * Модель роли в системе
- */
 @Entity
 @Table(name = "Roles")
 public class Role implements GrantedAuthority {
@@ -39,58 +36,30 @@ public class Role implements GrantedAuthority {
         this.name = name;
     }
 
-    
-    /** 
-     * @return Long
-     */
     public Long getId() {
         return id;
     }
 
-    
-    /** 
-     * @param id Идентификатор роли
-     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    
-    /** 
-     * @return String
-     */
     public String getName() {
         return name;
     }
 
-    
-    /** 
-     * @param name Название роли
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    
-    /** 
-     * @return Set<User>
-     */
     public Set<User> getUsers() {
         return users;
     }
 
-    
-    /** 
-     * @param users Список пользователей
-     */
     public void setUsers(Set<User> users) {
         this.users = users;
     }
 
-    
-    /** 
-     * @return String
-     */
     @Override
     public String getAuthority() {
         return getName();

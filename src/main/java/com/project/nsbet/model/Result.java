@@ -12,9 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-/**
- * Модель результата
- */
 @Entity
 @Table(name = "Results")
 public class Result {
@@ -37,50 +34,26 @@ public class Result {
         teams = new ArrayList<Team>();
     }
 
-    
-    /** 
-     * @return Long
-     */
     public Long getId() {
         return id;
     }
 
-    
-    /** 
-     * @param id Идентификатор
-     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    
-    /** 
-     * @return String
-     */
     public String getName() {
         return name;
     }
 
-    
-    /** 
-     * @param name Название исхода
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    
-    /** 
-     * @return List<Team>
-     */
     public List<Team> getTeams() {
         return teams;
     }
 
-    
-    /** 
-     * @param teams Команды
-     */
     public void setTeams(List<Team> teams) {
         this.teams = teams;
     }

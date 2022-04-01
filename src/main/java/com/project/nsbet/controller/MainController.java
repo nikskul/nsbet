@@ -25,7 +25,6 @@ public class MainController {
         this.matchService = matchService;
     }
 
-    
     /** 
      * Загружает главную страницу
      * @param model Представление страницы
@@ -44,7 +43,6 @@ public class MainController {
         return "index";
     }
 
-    
     /** 
      * Загружает страницу создания матча
      * @param model Представление страницы

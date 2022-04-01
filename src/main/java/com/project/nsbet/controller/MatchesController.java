@@ -31,7 +31,6 @@ public class MatchesController {
         this.matchService = matchService;
         this.userService = userService;
     }
-
     
     /** 
      * @return String
@@ -41,7 +40,6 @@ public class MatchesController {
         return "redirect:/";
     }
 
-    
     /** 
      * Отображает страницу матча
      * @param id Идентификатор
@@ -62,7 +60,6 @@ public class MatchesController {
         return "match";
     }
 
-    
     /** 
      * Создает новый матч
      * @param time Время матча

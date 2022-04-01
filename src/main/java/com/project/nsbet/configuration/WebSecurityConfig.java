@@ -9,9 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-/**
- * Конфигарация Spring Security
- */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -25,12 +22,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		this.encoderConfiguration = encoderConfiguration;
 	}
 
-	
-	/** 
-	 * Основная конфигурация
-	 * @param http Конфигурация
-	 * @throws Exception Исключение
-	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
@@ -47,11 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.permitAll();
 	}
 
-	
-	/** 
-	 * @param auth Настройка аунтефикации
-	 * @throws Exception Исключение
-	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication()

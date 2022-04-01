@@ -28,7 +28,6 @@ public class ProfilePageController {
         this.userService = userService;
     }
 
-    
     /** 
      * Отображает страницу профиля
      * @param model Страница профиля
@@ -45,7 +44,6 @@ public class ProfilePageController {
         return "profile";
     }
 
-    
     /** 
      * Обновляет фото пользователя
      * @param file Аватарка
