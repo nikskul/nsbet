@@ -8,6 +8,7 @@ class NsbetApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }

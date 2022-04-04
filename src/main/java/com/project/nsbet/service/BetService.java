@@ -27,16 +27,6 @@ public class BetService {
         this.resultRepository = resultRepository;
     }
 
-    
-    /** 
-     * Создает новую ставку и сохраняет ее в БД
-     * @param match Матч для ставки
-     * @param user Пользователь который ставит
-     * @param userChoice Выбор пользователя
-     * @param betValue Размер ставки
-     * @param betCoefficient Коэффициент ставки
-     * @return boolean
-     */
     public boolean save(Match match, User user, String userChoice, String betValue, String betCoefficient) {
 
         try {

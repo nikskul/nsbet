@@ -10,10 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class WalletService {
 
-    /** 
-     * Создает и возвращает новый объект {@link Wallet} 
-     * @return Wallet
-     */
     public Wallet createWallet() {
         return new Wallet();
     }

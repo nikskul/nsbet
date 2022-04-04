@@ -34,7 +34,7 @@
                 </div>
                 <div>
                     <h4 class="fw-bold mb-0">Дата рождения</h4>
-                    <p th:text="${#dates.format(user.birthday, 'dd MMMM yyyy')}">01.01.1900</p>
+                    <p th:text="${user.birthday}">01.01.1900</p>
                 </div>
             </div>
         </section>

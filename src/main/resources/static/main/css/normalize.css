@@ -25,3 +25,7 @@ footer {
 img {
     object-fit: cover;
 }
+
+.invalid-tooltip p {
+    margin: 0;
+}

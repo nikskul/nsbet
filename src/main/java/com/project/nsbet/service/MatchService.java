@@ -26,26 +26,14 @@ public class MatchService {
         this.matchRepository = matchRepository;
     }
 
-    
-    /** 
-     * Возвращает список всех матчей
-     * @return List<Match>
-     */
     public  List<Match> getAllMatches() {
         List<Match> list = matchRepository.findAll().subList(0, matchRepository.findAll().size());
-        
+
         Collections.reverse(list);
 
         return list;
     }
 
-    
-    /** 
-     * Метод для создания нового матча
-     * @param date Дата матча
-     * @param team1 Команда 1
-     * @param team2 Команда 2
-     */
     public void addMatch(Date date, Team team1, Team team2) {
         Match match = new Match();
 
@@ -63,12 +51,6 @@ public class MatchService {
         matchRepository.save(match);
     }
 
-    
-    /** 
-     * Возвращает {@link Match} с заданным идентификатором 
-     * @param id Идентификатор матча
-     * @return Match
-     */
     public Match findById(String id) {
         return matchRepository.getById(Long.parseLong(id));
     }

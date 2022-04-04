@@ -62,8 +62,7 @@
 }
  
 /* Checked */
-.form_radio_btn input[type=radio]:checked + label {
-	background: #198754;
+.form_radio_btn input[type=radio]:checked + label {background: #198754;
   border-color: #198754;
   color: #fff;
 }

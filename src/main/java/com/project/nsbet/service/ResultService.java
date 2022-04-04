@@ -30,9 +30,6 @@ public class ResultService {
         this.resultRepository = resultRepository;
     }
 
-    /**
-     * Генерирует результат и отправляет данные в БД
-     */
     public void generateResults() {
         Random rnd = new Random();
         List<Bet> bets = betRepository.findAll();
