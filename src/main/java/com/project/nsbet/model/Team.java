@@ -1,8 +1,5 @@
 package com.project.nsbet.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.*;
 
 @Entity
@@ -44,7 +41,12 @@ public class Team {
     }
 
     public double getRating() {
-        return rating = wins + draws / 2f;
+        rating = wins + draws / 2f;
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     public int getWins() {
@@ -70,4 +72,5 @@ public class Team {
     public void setLoses(int loses) {
         this.loses = loses;
     }
+
 }

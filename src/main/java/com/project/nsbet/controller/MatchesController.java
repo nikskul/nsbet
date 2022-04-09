@@ -1,6 +1,5 @@
 package com.project.nsbet.controller;
 
-import com.project.nsbet.model.Team;
 import com.project.nsbet.model.User;
 import com.project.nsbet.service.MatchService;
 import com.project.nsbet.service.UserService;
@@ -47,15 +46,15 @@ public class MatchesController {
      * Создает новый матч
      *
      * @param matchDateTime     Время матча
-     * @param firstTeam         Первая команда
-     * @param secondTeam        Второй команда
+     * @param firstTeamName     Первая команда
+     * @param secondTeamName    Второй команда
      * @return String
      */
     @PostMapping("/matches")
-    public String addMatch(String matchDateTime, Team firstTeam, Team secondTeam) {
+    public String addMatch(String matchDateTime, String firstTeamName, String secondTeamName) {
         LocalDateTime parsedMatchDateTime
                 = LocalDateTime.parse(matchDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
-        matchService.registerMatch(parsedMatchDateTime, firstTeam, secondTeam);
+        matchService.registerMatch(parsedMatchDateTime, firstTeamName, secondTeamName);
         return "redirect:/";
     }
 }

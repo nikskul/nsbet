@@ -24,7 +24,7 @@ public class Wallet {
     private User user;
 
     public Wallet() { 
-        balance = new BigDecimal(0d);
+        balance = new BigDecimal("0");
     }
 
     public Long getId() {

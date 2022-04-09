@@ -1,19 +1,13 @@
 package com.project.nsbet.controller;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-
-import com.project.nsbet.model.Match;
-import com.project.nsbet.model.Team;
 import com.project.nsbet.model.User;
 import com.project.nsbet.service.MatchService;
-import com.project.nsbet.service.TeamService;
 import com.project.nsbet.service.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.Map;
 
 /**
  * Сервлет для главной страницы и страницы настроек
@@ -23,13 +17,11 @@ public class MainController {
 
     private final UserService userService;
     private final MatchService matchService;
-    private final TeamService teamService;
 
     @Autowired
-    public MainController(UserService userService, MatchService matchService, TeamService teamService) {
+    public MainController(UserService userService, MatchService matchService) {
         this.userService = userService;
         this.matchService = matchService;
-        this.teamService = teamService;
     }
 
     /** 

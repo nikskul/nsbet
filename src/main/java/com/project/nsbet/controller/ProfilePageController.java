@@ -43,11 +43,10 @@ public class ProfilePageController {
      *
      * @param file Аватарка
      * @return String
-     * @throws IOException
      */
     @PostMapping("/profile/avatar")
     public String update(Map<String, Object> model,
-                         @RequestParam(name = "file", required = true) MultipartFile file
+                         @RequestParam(name = "file") MultipartFile file
     ) {
         User currentUser = userService.getCurrentUser();
         try {

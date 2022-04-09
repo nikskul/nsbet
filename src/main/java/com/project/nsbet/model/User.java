@@ -64,7 +64,7 @@ public class User implements UserDetails {
     }
 
     public User() { 
-        bets = new ArrayList<Bet>();
+        bets = new ArrayList<>();
     }
 
     @Override

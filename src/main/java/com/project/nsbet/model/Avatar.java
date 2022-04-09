@@ -28,9 +28,6 @@ public class Avatar {
     @Lob
     private byte[] bytes;
 
-    @OneToOne(mappedBy = "avatar")
-    private User user;
-
     public Avatar() { }
 
     public Avatar(String id, String name, String contentType, Long size, byte[] bytes) {
@@ -80,4 +77,5 @@ public class Avatar {
     public void setBytes(byte[] bytes) {
         this.bytes = bytes;
     }
+
 }

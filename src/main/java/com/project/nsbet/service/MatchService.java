@@ -1,19 +1,18 @@
 package com.project.nsbet.service;
 
 
-import java.time.LocalDateTime;
-import java.util.*;
-
 import com.project.nsbet.model.Match;
 import com.project.nsbet.model.Team;
 import com.project.nsbet.repository.MatchRepository;
-
 import com.project.nsbet.utility.ScheduleService;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MatchService {
@@ -46,7 +45,10 @@ public class MatchService {
     }
 
     @Transactional
-    public void registerMatch(LocalDateTime matchDateTime, Team firstTeam, Team secondTeam) {
+    public void registerMatch(LocalDateTime matchDateTime, String firstTeamName, String secondTeamName) {
+        Team firstTeam = new Team(firstTeamName);
+        Team secondTeam = new Team(secondTeamName);
+
         Match match = new Match();
         match.setMatchStartTime(matchDateTime);
 

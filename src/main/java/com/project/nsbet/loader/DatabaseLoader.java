@@ -82,8 +82,8 @@ public class DatabaseLoader implements CommandLineRunner {
             for (int i = 0; i < teams.size() - 1; i += 2) {
                 matchService.registerMatch(
                         LocalDateTime.now().plusMinutes(20L + (i * 5L)),
-                        teams.get(i),
-                        teams.get(i + 1)
+                        teams.get(i).getName(),
+                        teams.get(i + 1).getName()
                 );
             }
         }

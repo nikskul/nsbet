@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -52,7 +53,7 @@ public class UserService {
             throw new AlreadyExistException("Логин " + newUser.getUsername() + " уже занят. Измените логин.");
     }
 
-    private User initUser(User user) {
+    private void initUser(User user) {
         Wallet wallet = new Wallet();
         user.setWallet(wallet);
         wallet.setUser(user);
@@ -60,18 +61,16 @@ public class UserService {
         user.setActive(true);
         user.setRoles(Collections.singleton(roleRepository.findByName("ROLE_USER")));
         user.setPassword(encoderConfiguration.getPasswordEncoder().encode(user.getPassword()));
-
-        return user;
     }
 
-    private User setAvatarToUser(User user, MultipartFile file)
+    private void setAvatarToUser(User user, MultipartFile file)
             throws IOException {
 
         user.setAvatar(avatarService.save(file));
-        return user;
     }
 
-    public User saveUser(User user, String passwordVerification, MultipartFile file)
+    @Transactional
+    public void registerUser(User user, String passwordVerification, MultipartFile file)
             throws CredentialVerificationException, AlreadyExistException, IOException {
 
         validateUser(user, passwordVerification);
@@ -80,13 +79,14 @@ public class UserService {
         if (!file.isEmpty())
             setAvatarToUser(user, file);
 
-        return userRepository.save(user);
+        userRepository.saveAndFlush(user);
     }
 
-    public User updateUserAvatar(User userToUpdate, MultipartFile file)
+    @Transactional
+    public void updateUserAvatar(User userToUpdate, MultipartFile file)
             throws IOException {
 
         userToUpdate.setAvatar(avatarService.save(file));
-        return userRepository.save(userToUpdate);
+        userRepository.save(userToUpdate);
     }
 }
