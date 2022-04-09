@@ -3,47 +3,59 @@
 
 <head th:replace="parts/header :: head"></head>
 
-<body>
-    <header th:replace="parts/header :: header"></header>
+<body style="background-color: #eee;">
+<header th:replace="parts/header :: header"></header>
 
-    <!-- Start Of Content -->
-    <main class="profile mt-5 row container text-center">
-        <h1>Профиль</h1>
-        <section class="row mt-5 justify-content-md-center">
-            <div class="col-auto">
-                <div>
-                    <img class="rounded mx-auto d-block" width="400" height="400"
-                        th:src="'/avatars/' + ${user.avatar.id}" alt="avatar">
-                </div>
-                <div class="input-group mt-3">
-                    <form class="input-group" th:action="@{profile/avatar}" method="post" enctype="multipart/form-data">
-                        <button class="btn btn-outline-secondary" type="submit"
-                            id="inputGroupFileAddon">Обновить</button>
-                        <input type="file" name="file" class="form-control " id="inputGroupFile" required>
-                    </form>
-                </div>
+<!-- Start Of Content -->
+<main class="profile mt-5 mx-auto container d-flex flex-column text-center">
+    <h1>Профиль</h1>
+    <section class="card shadow-sm mx-auto d-flex flex-row text-start mt-5 p-5">
+        <div class="col-4 d-flex flex-column">
+            <div class="col mx-auto" style="max-width: 300px; max-height: 400px;"
+                 th:switch="${user.getAvatar()} != null">
+                <img th:case="false"
+                     th:src="@{/images/default-avatar.jpg}"
+                     src="../../static/images/default-avatar.jpg"
+                     alt="avatar"
+                     class="rounded d-block">
+                <img th:case="true"
+                     th:src="'/avatars/' + ${user.getAvatar().getId()}"
+                     alt="avatar"
+                     class="rounded d-block">
+                </button>
             </div>
-            <div class="col-auto text-start">
-                <div>
-                    <h4 class="fw-bold mb-0">Имя</h4>
-                    <p th:text="${user.firstName}">Имя</p>
-                </div>
-                <div>
-                    <h4 class="fw-bold mb-0">Фамилия</h4>
-                    <p th:text="${user.lastName}">Фамилия</p>
-                </div>
-                <div>
-                    <h4 class="fw-bold mb-0">Дата рождения</h4>
-                    <p th:text="${user.birthday}">01.01.1900</p>
-                </div>
+            <div class="col mt-3">
+                <form class="d-flex flex-column align-items-start" th:action="@{profile/avatar}" method="post"
+                      enctype="multipart/form-data">
+                    <button class="btn btn-outline-secondary order-1 mt-3" type="submit"
+                            id="inputGroupFileAddon">Обновить аватар
+                    </button>
+                    <input type="file" name="file" class="form-control " id="inputGroupFile" required
+                           th:classappend="${fileError} != null ? 'is-invalid' : ''">
+                    <div class="invalid-feedback order-1">
+                        <p class="p-0" th:text="${fileError}">Ошибка загрузки файла</p>
+                    </div>
+                </form>
             </div>
-        </section>
+        </div>
+        <div class="col ms-5" style="width: 250px">
+            <div class="row">
+                <h4 th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}" class="fw-bold">Имя Фамилия</h4>
+                <p>Дата рождения:
+                    <span th:text="${#temporals.format(user.getBirthday(),'d MMMM yyyy')}">01 месяц 2000</span>
+                </p>
+            </div>
+        </div>
+        <div class="col d-flex flex-column justify-content-center" style="max-width: 300px;">
+            <canvas id="betInfos"></canvas>
+        </div>
+    </section>
 
-    </main>
-    <!-- End Of Content -->
+</main>
+<!-- End Of Content -->
 
-    <footer th:replace="parts/footer :: footer"></footer>
-    <div th:replace="parts/footer :: scripts"></div>
+<footer th:replace="parts/footer :: footer"></footer>
+<div th:replace="parts/footer :: scripts"></div>
 </body>
 
 </html>

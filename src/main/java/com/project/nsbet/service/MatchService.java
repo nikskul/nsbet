@@ -1,57 +1,60 @@
 package com.project.nsbet.service;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import com.project.nsbet.model.Match;
 import com.project.nsbet.model.Team;
 import com.project.nsbet.repository.MatchRepository;
 
+import com.project.nsbet.utility.ScheduleService;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * Сервис для работы с {@link Match}
- */
+import javax.transaction.Transactional;
+
 @Service
 public class MatchService {
     
     public final MatchRepository matchRepository;
+    public final ScheduleService scheduleService;
 
     @Autowired
-    public MatchService(MatchRepository matchRepository) {
+    public MatchService(MatchRepository matchRepository, ScheduleService scheduleService) {
         this.matchRepository = matchRepository;
+        this.scheduleService = scheduleService;
     }
 
-    public  List<Match> getAllMatches() {
-        List<Match> list = matchRepository.findAll().subList(0, matchRepository.findAll().size());
-
-        Collections.reverse(list);
-
-        return list;
+    public Optional<Match> findById(Long id) {
+        return matchRepository.findById(id);
     }
 
-    public void addMatch(Date date, Team team1, Team team2) {
+    public List<Match> findAll() {
+        return matchRepository.findAll();
+    }
+
+    public List<Match> getAllMatchesSortedByTime() {
+        var matches = matchRepository.findAll();
+        matches.sort(Comparator.comparing(Match::getMatchStartTime));
+        return matches;
+    }
+
+    public List<Team> getMatchTeams(Match match) {
+        return List.of(match.getFirstTeam(), match.getSecondTeam());
+    }
+
+    @Transactional
+    public void registerMatch(LocalDateTime matchDateTime, Team firstTeam, Team secondTeam) {
         Match match = new Match();
+        match.setMatchStartTime(matchDateTime);
 
-        team1.getMatches().add(match);
+        match.setFirstTeam(firstTeam);
+        match.setSecondTeam(secondTeam);
 
-        team2.getMatches().add(match);
+        matchRepository.saveAndFlush(match);
 
-        List<Team> teams = new ArrayList<Team>();;
-        teams.add(team1);
-        teams.add(team2);
-
-        match.setTime(date);
-        match.setTeams(teams);
-
-        matchRepository.save(match);
-    }
-
-    public Match findById(String id) {
-        return matchRepository.getById(Long.parseLong(id));
+        scheduleService.addNewTime(match.getMatchStartTime());
     }
 }

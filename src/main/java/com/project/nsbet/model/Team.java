@@ -3,13 +3,7 @@ package com.project.nsbet.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Teams")
@@ -20,34 +14,17 @@ public class Team {
     @Column(name = "team_id")
     private Long id;
     private String name;
-    private Float rating;
-    private Short win;
-    private Short draw;
-    private Short lose;
-
-    @ManyToMany(mappedBy = "teams")
-    private List<Result> results;
-
-    @ManyToMany(mappedBy = "teams")
-    private List<Match> matches;
+    private double rating = 0;
+    private int wins = 0;
+    private int draws = 0;
+    private int loses = 0;
 
     public Team(String name) {
         this.name = name;
-        results = new ArrayList<Result>();
-        matches = new ArrayList<Match>();
-        rating = 0f;
-        win = 0;
-        draw = 0;
-        lose = 0;
     }
 
-    public Team() { 
-        results = new ArrayList<Result>();
-        matches = new ArrayList<Match>();
-        rating = 0f;
-        win = 0;
-        draw = 0;
-        lose = 0;
+    public Team() {
+
     }
 
     public Long getId() {
@@ -66,51 +43,31 @@ public class Team {
         this.name = name;
     }
 
-    public Float getRating() {
-        return rating;
+    public double getRating() {
+        return rating = wins + draws / 2f;
     }
 
-    public void setRating(Float rating) {
-        this.rating = rating;
+    public int getWins() {
+        return wins;
     }
 
-    public Short getWin() {
-        return win;
+    public void setWins(int wins) {
+        this.wins = wins;
     }
 
-    public void setWin(Short win) {
-        this.win = win;
+    public int getDraws() {
+        return draws;
     }
 
-    public Short getDraw() {
-        return draw;
+    public void setDraws(int draws) {
+        this.draws = draws;
     }
 
-    public void setDraw(Short draw) {
-        this.draw = draw;
+    public int getLoses() {
+        return loses;
     }
 
-    public Short getLose() {
-        return lose;
-    }
-
-    public void setLose(Short lose) {
-        this.lose = lose;
-    }
-
-    public List<Result> getResults() {
-        return results;
-    }
-
-    public void setResults(List<Result> results) {
-        this.results = results;
-    }
-
-    public List<Match> getMatches() {
-        return matches;
-    }
-
-    public void setMatches(List<Match> matches) {
-        this.matches = matches;
+    public void setLoses(int loses) {
+        this.loses = loses;
     }
 }

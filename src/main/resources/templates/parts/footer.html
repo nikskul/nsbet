@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
 
 <body>
-    <footer th:fragment="footer">
-        <p class="text-muted">&copy; 2021 NSkul</p>
-    </footer>
+<footer th:fragment="footer">
+    <p class="text-muted">&copy; 2021 NSkul</p>
+</footer>
 </body>
 
 <th:block th:fragment="scripts">
@@ -14,6 +14,55 @@
     <script th:src="@{/main/js/popper.min.js}"></script>
     <!-- Bootstrap JS -->
     <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+
+    <!-- Charts.js -->
+    <th:block th:if="${#httpServletRequest.getRequestURI().endsWith('/profile')}">
+        <script th:src="@{/main/js/chart.min.js}"></script>
+        <script>
+            const data = [15, 23];
+            const ctx = document.getElementById('betInfos').getContext('2d');
+            const myChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Победы', 'Поражения'],
+                        datasets: [{
+                            data: data,
+                            backgroundColor: [
+                                '#3DFF6E',
+                                '#DB1F2A'
+                            ],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    color: '#000000',
+                                    font: {
+                                        family: "system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial",
+                                    }
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Статистика',
+                                color: '#000000',
+                                padding: {
+                                    bottom: 16
+                                },
+                                font: {
+                                    family: "system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial",
+                                    size: 24
+                                }
+                            }
+                        }
+                    }
+                });
+        </script>
+    </th:block>
 </th:block>
 
 </html>

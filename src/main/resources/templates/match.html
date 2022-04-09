@@ -14,24 +14,24 @@
 
             <div class="row text-center">
                 <div class="form_radio_btn col-auto">
-                    <input id="radioWin" class="form-check-input mt-0" type="radio" name="userChoice" value="1" required>
+                    <input id="radioWin" class="form-check-input mt-0" type="radio" name="userChoice" value="firstTeamWin" required>
                     <label for="radioWin">
-                        <span th:text="${match.teams[0].name}">Team</span>
+                        <span th:text="${match.firstTeam.name}">Team 1</span>
                         <hr class="m-0">
                         <span>x2</span>
                     </label>
                 </div>
                 <div class="form_radio_btn col-auto">
-                    <input id="radioDraw" class="form-check-input mt-0" type="radio" name="userChoice" value="2" required>
+                    <input id="radioDraw" class="form-check-input mt-0" type="radio" name="userChoice" value="draw" required>
                     <label for="radioDraw">
                         Ничья
                         <hr class="m-0"><span>x1.25</span>
                     </label>
                 </div>
                 <div class="form_radio_btn col-auto">
-                    <input id="radioLose" class="form-check-input mt-0" type="radio" name="userChoice" value="3" required>
+                    <input id="radioLose" class="form-check-input mt-0" type="radio" name="userChoice" value="secondTeamWin" required>
                     <label for="radioLose">
-                        <span th:text="${match.teams[1].name}">Team</span>
+                        <span th:text="${match.secondTeam.name}">Team 2</span>
                         <hr class="m-0">
                         <span>x2</span>
                     </label>
@@ -51,8 +51,9 @@
                 </div>
             </div>
 
-            <div class="col-12">
-                <button th:if="${!match.time.before(#dates.createNow())}" class="btn btn-primary mt-3 mb-3" type="submit">Сделать ставку</button>
+            <div th:if="${!match.matchStartTime.isBefore(#temporals.createNow())}"
+                 class="col-12">
+                <button class="btn btn-primary mt-3 mb-3" type="submit">Сделать ставку</button>
             </div>
         </form>
     </main>

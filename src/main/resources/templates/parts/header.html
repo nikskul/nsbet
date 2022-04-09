@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="ru">
 
 <head th:fragment="head">
     <meta charset="UTF-8">
@@ -20,43 +21,59 @@
     <title>NSBet - Ставки на спортивные игры (учебный проект)</title>
 </head>
 
+
 <body>
-    <header class="container-fluid p-3 bg-dark text-white" th:fragment="header">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-                    <use xlink:href="#bootstrap"></use>
-                </svg>
-            </a>
+<header class="container-fluid p-3 bg-dark text-white" th:fragment="header">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                <use xlink:href="#bootstrap"></use>
+            </svg>
+        </a>
 
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/" class="nav-link px-2 text-white">Главная</a></li>
-                <li><a sec:authorize="isAuthenticated()" href="/bets" class="nav-link px-2 text-white">Мои ставки</a></li>
-            </ul>
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/" class="nav-link px-2 text-white">Главная</a></li>
+            <li><a sec:authorize="isAuthenticated()" href="/bets" class="nav-link px-2 text-white">Мои ставки</a></li>
+        </ul>
 
-            <div sec:authorize="!isAuthenticated()" class="text-end">
-                <a href="/login" role="button" aria-pressed="true" class="btn btn-outline-light me-2">Вход</a>
-                <a href="/sign-up" role="button" aria-pressed="true" class="btn btn-warning">Регистрация</a>
-            </div>
-
-            <div sec:authorize="isAuthenticated()" class="dropdown text-end row">
-                <p class="col-auto m-0 pt-1"><span th:text="${user.wallet.balance}"></span> ₽</p>
-                <a href="#" class="col d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser1"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <img th:src="'/avatars/' + ${user.avatar.id}" alt="mdo" width="32" height="32"
-                        class="rounded-circle">
-                </a>
-                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="/profile">Профиль</a></li>
-                    <li><a class="dropdown-item" href="/admin">Настройки</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="/logout">Выход</a></li>
-                </ul>
-            </div>
+        <div sec:authorize="!isAuthenticated()" class="text-end">
+            <a href="/login" role="button" aria-pressed="true" class="btn btn-outline-light me-2">Вход</a>
+            <a href="/sign-up" role="button" aria-pressed="true" class="btn btn-warning">Регистрация</a>
         </div>
-    </header>
+
+        <!--/*@thymesVar id="user" type="com.project.nsbet.model.User"*/-->
+        <div th:if="${user} != null" sec:authorize="isAuthenticated()"
+             class="dropdown justify-content-center text-end row">
+            <p th:text="${#numbers.formatCurrency(user.wallet.balance)}"
+               class="col-auto m-0 pt-1">
+                1 000 000 ₽
+            </p>
+            <button th:switch="${user.avatar} != null"
+                    href="#"
+                    id="dropdownUser"
+                    class="col btn p-0 d-block link-light text-decoration-none dropdown-toggle"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                <img th:case="false"
+                     th:src="@{/images/default-avatar.jpg}"
+                     src="../../static/images/default-avatar.jpg"
+                     alt="mdo" width="32" height="32"
+                     class="rounded-circle">
+                <img th:case="true"
+                     th:src="'/avatars/' + ${user.getAvatar().getId()}"
+                     alt="mdo" width="32" height="32"
+                     class="rounded-circle">
+            </button>
+            <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser">
+                <li><a class="dropdown-item" href="/profile">Профиль</a></li>
+                <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" href="/admin">Настройки</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="/logout">Выход</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
 </body>
 
 </html>

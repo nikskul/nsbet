@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.project.nsbet.exception.AlreadyExistException;
 import com.project.nsbet.exception.CredentialVerificationException;
+import com.project.nsbet.exception.NotFoundException;
 import com.project.nsbet.model.User;
 import com.project.nsbet.service.UserService;
 
@@ -24,9 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Сервлет регистрации
- */
 @Controller
 public class RegistrationController {
 

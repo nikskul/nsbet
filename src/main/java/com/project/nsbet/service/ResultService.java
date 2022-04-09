@@ -1,73 +1,101 @@
 package com.project.nsbet.service;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
-
-import com.project.nsbet.model.Bet;
-import com.project.nsbet.model.Result;
-import com.project.nsbet.model.Team;
-import com.project.nsbet.model.Wallet;
+import com.project.nsbet.model.*;
 import com.project.nsbet.repository.BetRepository;
-import com.project.nsbet.repository.ResultRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.project.nsbet.repository.MatchRepository;
 import org.springframework.stereotype.Service;
 
-/**
- * Сервис для работы с {@link Result}
- */
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
+
 @Service
 public class ResultService {
 
+    private final MatchRepository matchRepository;
     private final BetRepository betRepository;
-    private final ResultRepository resultRepository;
 
-    @Autowired
-    public ResultService(BetRepository betRepository, ResultRepository resultRepository) {
+    public ResultService(MatchRepository matchRepository,
+                         BetRepository betRepository
+    ) {
+        this.matchRepository = matchRepository;
         this.betRepository = betRepository;
-        this.resultRepository = resultRepository;
     }
 
-    public void generateResults() {
+    private Optional<Team> getMatchWinnerTeam(Match match) {
+        int firstTeamScore = match.getResult().getFirstTeamScore();
+        int secondTeamScore = match.getResult().getSecondTeamScore();
+
+        return firstTeamScore > secondTeamScore
+                ? Optional.ofNullable(match.getFirstTeam())
+                : firstTeamScore < secondTeamScore
+                ? Optional.ofNullable(match.getSecondTeam())
+                : Optional.empty();
+    }
+
+    private void creditUserWinning(Bet bet) {
+        BigDecimal betCoefficient = BigDecimal.valueOf(Double.valueOf(bet.getBetCoefficient()));
+        Wallet userWallet = bet.getUser().getWallet();
+        userWallet.setBalance(
+                userWallet
+                        .getBalance()
+                        .add(bet.getBetValue().multiply(betCoefficient)
+                        )
+        );
+
+        bet.setBetWin(true);
+        betRepository.save(bet);
+    }
+
+    private void updateMatchBetting(Match match) {
+
+        Optional<Team> winnerTeam = getMatchWinnerTeam(match);
+
+        List<Bet> currentMatchBets = betRepository.findAllByMatchId(match.getId());
+
+        List<Bet> winningBets = currentMatchBets
+                .stream()
+                .filter(bet -> Objects.equals(bet.getTeam(), winnerTeam.orElse(null)))
+                .collect(Collectors.toList());
+
+        winningBets.forEach(this::creditUserWinning);
+
+        List<Bet> loserBets = currentMatchBets
+                .stream()
+                .filter(bet -> !winningBets.contains(bet))
+                .collect(Collectors.toList());
+
+        loserBets.forEach(bet -> {
+            bet.setBetWin(false);
+            betRepository.save(bet);
+        });
+    }
+
+    private void generateMatchResultsAndSave(Match match) {
         Random rnd = new Random();
-        List<Bet> bets = betRepository.findAll();
+        Result matchResult = new Result();
+        matchResult.setFirstTeamScore(rnd.nextInt(5));
+        matchResult.setSecondTeamScore(rnd.nextInt(5));
 
-        for (Bet bet : bets) {
-            if (bet.getBetDate().before(Calendar.getInstance().getTime()) && bet.getResult().getName().equals("null")) {
+        match.setResult(matchResult);
+        matchRepository.save(match);
+    }
 
-                Long index = (long) (rnd.nextInt(3));
-                Result res = resultRepository.getById(++index);
-                bet.setResult(res);
-
-
-                Team team = bet.getTeam();
-                team.getResults().add(res);
-                res.getTeams().add(team);
-
-                switch (res.getName()) {
-                    case "win":
-
-                        BigDecimal betCoefficient = BigDecimal.valueOf(Double.valueOf(bet.getBetCoefficient()));
-                        BigDecimal betValue = bet.getBetValue();
-                        Wallet wallet = bet.getUser().getWallet();
-                        
-                        wallet.setBalance(wallet.getBalance().add(betValue.multiply(betCoefficient)));
-                        team.setWin((short) (team.getWin() + 1));
-
-                        break;
-                    case "lose":
-                        team.setLose((short) (team.getLose() + 1));
-                        break;
-                    case "draw":
-                    default:
-                        team.setDraw((short) (team.getDraw() + 1));
-                        break;
-                }
-
-                betRepository.save(bet);
-            }
+    @Transactional
+    public void generateResultsAndCreditWinnings() {
+        List<Match> alreadyStartedAndWithoutResultMatches = matchRepository.findAll()
+                .stream()
+                .filter(match -> match.getMatchStartTime().isBefore(LocalDateTime.now()))
+                .filter(match -> match.getResult() == null)
+                .collect(Collectors.toList());
+        for (Match match : alreadyStartedAndWithoutResultMatches) {
+            generateMatchResultsAndSave(match);
+            updateMatchBetting(match);
         }
     }
 }

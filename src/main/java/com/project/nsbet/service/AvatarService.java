@@ -1,12 +1,10 @@
 package com.project.nsbet.service;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import com.project.nsbet.exception.InvalidFileTypeException;
+import com.project.nsbet.exception.NotFoundException;
 import com.project.nsbet.model.Avatar;
 import com.project.nsbet.repository.AvatarRepository;
 
@@ -44,6 +42,19 @@ public class AvatarService {
             throw new InvalidFileTypeException("Формат файла не поддерживается. Только картинки: jpeg, png.");
         }
     }
+
+    public Avatar getDefaultAvatar() throws NotFoundException {
+        return avatarRepository
+                .findById(
+                        String.valueOf(
+                                UUID.fromString("default-avatar.jpg")
+                        )
+                )
+                .orElseThrow(
+                        () -> new NotFoundException("Стандартный аватар не найден.")
+                );
+    }
+
     public Optional<Avatar> getAvatar(String id) {
         return avatarRepository.findById(id);
     }

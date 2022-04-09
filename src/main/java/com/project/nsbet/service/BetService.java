@@ -1,70 +1,81 @@
 package com.project.nsbet.service;
 
-import java.math.BigDecimal;
-
 import com.project.nsbet.model.Bet;
 import com.project.nsbet.model.Match;
-import com.project.nsbet.model.Team;
 import com.project.nsbet.model.User;
 import com.project.nsbet.repository.BetRepository;
-import com.project.nsbet.repository.ResultRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * Сервис для работы с {@link Match}
- */
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
+
 @Service
 public class BetService {
 
     private final BetRepository betRepository;
-    private final ResultRepository resultRepository;
 
     @Autowired
-    public BetService(BetRepository betRepository, ResultRepository resultRepository) {
+    public BetService(BetRepository betRepository) {
         this.betRepository = betRepository;
-        this.resultRepository = resultRepository;
     }
 
-    public boolean save(Match match, User user, String userChoice, String betValue, String betCoefficient) {
-
+    private void validateBetValueOrThrowException(User user, String betValue) throws Exception {
+        double value;
         try {
-            Float.parseFloat(betValue);
+            value = Double.parseDouble(betValue);
         } catch (Exception e) {
-            return false;
+            throw new Exception(e.getMessage());
         }
 
-        if (Float.parseFloat(betValue) > user.getWallet().getBalance().floatValue()
-                || Float.parseFloat(betValue) <= 0) {
-            return false;
+        if (value > user.getWallet().getBalance().doubleValue()
+                || value <= 0) {
+            throw new Exception("Не достаточно средств. Или ставка не корректна");
         }
+    }
+
+    @Transactional
+    public void registerBet(Match match,
+                            User user,
+                            String userChoice,
+                            String betValue
+    ) throws Exception {
+
+        validateBetValueOrThrowException(user, betValue);
 
         Bet bet = new Bet();
 
-        bet.setUser(user);
+        bet.setMatch(match);
         bet.setBetValue(BigDecimal.valueOf(Double.parseDouble(betValue)));
-        bet.setBetCoefficient(Float.parseFloat(betCoefficient));
-        bet.setResult(resultRepository.getById(4L));
-        bet.setBetDate(match.getTime());
+        bet.setBetCreationDate(match.getMatchStartTime());
 
         switch (userChoice) {
-            case "1":
-                bet.setTeam(match.getTeams().get(0));
+            case "firstTeamWin":
+                bet.setTeam(match.getFirstTeam());
+                bet.setBetCoefficient(2f);
                 break;
-            case "3":
-                bet.setTeam(match.getTeams().get(1));
+            case "secondTeamWin":
+                bet.setTeam(match.getSecondTeam());
+                bet.setBetCoefficient(2f);
                 break;
-            case "2":
+            case "draw":
             default:
-                bet.setTeam(new Team());
+                bet.setTeam(null);
+                bet.setBetCoefficient(1.25f);
                 break;
         }
 
         user.getBets().add(bet);
-        user.getWallet().setBalance(user.getWallet().getBalance().subtract(BigDecimal.valueOf(Double.parseDouble(betValue))));
+        user.getWallet().setBalance(
+                user.getWallet().getBalance()
+                        .subtract(
+                                BigDecimal.valueOf(
+                                        Double.parseDouble(betValue)
+                                )
+                        )
+        );
+        bet.setUser(user);
 
-        betRepository.save(bet);
-        return true;
+        betRepository.saveAndFlush(bet);
     }
 }

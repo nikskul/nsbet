@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * Сервлет страницы профиля
- */
 @Controller
 public class ProfilePageController {
+    // TODO: Add Profile Delete
 
     private final UserService userService;
 
@@ -26,45 +24,39 @@ public class ProfilePageController {
         this.userService = userService;
     }
 
-    /** 
+    /**
      * Отображает страницу профиля
+     *
      * @param model Страница профиля
      * @return String
      */
     @GetMapping("/profile")
-    public String view(Map<String, Object> model) {
-
+    public String getPage(Map<String, Object> model) {
         User currentUser = userService.getCurrentUser();
-
         if (currentUser != null)
             model.put("user", currentUser);
-
         return "profile";
     }
 
-    /** 
+    /**
      * Обновляет фото пользователя
+     *
      * @param file Аватарка
      * @return String
      * @throws IOException
      */
     @PostMapping("/profile/avatar")
-    public String update(@RequestParam(name = "file", required = true) MultipartFile file) throws IOException {
-        // TODO: Change Logic
-//        User currentUser = userService.getCurrentUser();
-//
-//        if (file != null && currentUser != null) {
-//            Avatar avatar = new Avatar();
-//            avatar.setName(StringUtils.cleanPath(file.getOriginalFilename()));
-//            avatar.setContentType(file.getContentType());
-//            avatar.setBytes(file.getBytes());
-//            avatar.setSize(file.getSize());
-//
-//            currentUser.setAvatar(avatar);
-//        }
-
-//        userService.save(currentUser);
-
+    public String update(Map<String, Object> model,
+                         @RequestParam(name = "file", required = true) MultipartFile file
+    ) {
+        User currentUser = userService.getCurrentUser();
+        try {
+            userService.updateUserAvatar(currentUser, file);
+        } catch (IOException e) {
+            model.put("fileError", e.getMessage());
+            return "profile";
+        }
         return "redirect:/profile";
     }
+
 }

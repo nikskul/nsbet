@@ -45,7 +45,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "avatars_avatar_id")
     private Avatar avatar;
     
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

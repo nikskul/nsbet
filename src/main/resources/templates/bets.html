@@ -1,41 +1,59 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
 
-<head th:replace="parts/header :: head"></head>
+<head th:replace="parts/header :: head"><title></title></head>
 
 <body>
-    <header th:replace="parts/header :: header"></header>
+<header th:replace="parts/header :: header"></header>
 
-    <!-- Start Of Content -->
-    <main class="row container pt-5 pb-5">
-        <h1>Ставки</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Команда</th>
-                    <th scope="col">Сумма</th>
-                    <th scope="col">Коэффициент</th>
-                    <th scope="col">Дата</th>
-                    <th scope="col">Результат</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="bet : ${bets}">
-                    <th th:text="${bet.id}" scope="row">1</th>
-                    <th th:text="${bet.team.name}">1</th>
-                    <th th:text="${bet.betValue}">1</th>
-                    <th th:text="${bet.betCoefficient}">1</th>
-                    <th th:text="${bet.betDate}">1</th>
-                    <th th:text="${bet.result.name}">1</th>
-                </tr>
-            </tbody>
-        </table>
-    </main>
-    <!-- End Of Content -->
+<!-- Start Of Content -->
+<main class="row container pt-5 pb-5">
+    <h1>Ставки</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Команда</th>
+            <th scope="col">Сумма</th>
+            <th scope="col">Коэффициент</th>
+            <th scope="col">Дата ставки</th>
+            <th scope="col">Результат</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="bet : ${bets}">
+            <td th:text="${bet.id}">#id</td>
+            <td th:text="${bet.team == null ? 'Ничья' : bet.team.name}">Team name</td>
+            <td th:text="${bet.betValue}">15000</td>
+            <td th:text="${bet.betCoefficient}">1.25</td>
+            <td th:text="${#temporals.format(bet.betCreationDate, 'dd.MM.yyyy HH:MM')}">01.01.2000 00:00</td>
+            <th:block>
+                <td th:if="${bet.betWin == null}">
+                    <div th:text="'Ожидание результата'"
+                         class="badge bg-secondary">Ожидание результата
+                    </div>
+                </td>
+                <th:block th:if="${bet.betWin != null}">
+                    <td th:if="${#bools.isTrue(bet.betWin)}">
+                        <div th:text="'Выигрыш'"
+                             class="badge bg-success">Выигрыш
+                        </div>
+                    </td>
+                    <td th:if="${#bools.isFalse(bet.betWin)}">
+                        <div th:text="'Проигрыш'"
+                             class="badge bg-danger">Проигрыш
+                        </div>
+                    </td>
+                </th:block>
+            </th:block>
+        </tr>
+        </tbody>
+    </table>
+</main>
+<!-- End Of Content -->
 
-    <footer th:replace="parts/footer :: footer"></footer>
-    <div th:replace="parts/footer :: scripts"></div>
+<footer th:replace="parts/footer :: footer"></footer>
+<div th:replace="parts/footer :: scripts"></div>
 </body>
 
 </html>

@@ -22,9 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-/**
- * Сервлет обработки и загрузки файлов
- */
 @RestController
 @RequestMapping("/avatars")
 public class AvatarController {
@@ -95,7 +92,7 @@ public class AvatarController {
     public ResponseEntity<byte[]> getFile(@PathVariable String id) {
         Optional<Avatar> avatarOptional = avatarService.getAvatar(id);
 
-        if (!avatarOptional.isPresent()) {
+        if (avatarOptional.isEmpty()) {
             return ResponseEntity.notFound()
                     .build();
         }

@@ -3,6 +3,7 @@ package com.project.nsbet.service;
 import com.project.nsbet.configuration.EncoderConfiguration;
 import com.project.nsbet.exception.AlreadyExistException;
 import com.project.nsbet.exception.CredentialVerificationException;
+import com.project.nsbet.exception.NotFoundException;
 import com.project.nsbet.model.User;
 import com.project.nsbet.model.Wallet;
 import com.project.nsbet.repository.RoleRepository;
@@ -17,9 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Collections;
 
-/**
- * Сервис для работы с {@link User}
- */
 @Service
 public class UserService {
 
@@ -30,14 +28,18 @@ public class UserService {
     private final AvatarService avatarService;
 
     @Autowired
-    public UserService(UserRepository userRepository, EncoderConfiguration encoderConfiguration, RoleRepository roleRepository, AvatarService avatarService) {
+    public UserService(UserRepository userRepository,
+                       EncoderConfiguration encoderConfiguration,
+                       RoleRepository roleRepository,
+                       AvatarService avatarService
+    ) {
         this.userRepository = userRepository;
         this.encoderConfiguration = encoderConfiguration;
         this.roleRepository = roleRepository;
         this.avatarService = avatarService;
     }
 
-    public User getCurrentUser()  {
+    public User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         return userRepository.findByUsername(username).orElse(null);
@@ -69,13 +71,17 @@ public class UserService {
     }
 
     public User saveUser(User user, String passwordVerification, MultipartFile file)
-            throws CredentialVerificationException, AlreadyExistException, IOException  {
-
+            throws CredentialVerificationException, AlreadyExistException, IOException {
         validateUser(user, passwordVerification);
         initUser(user);
         if (!file.isEmpty())
             setAvatarToUser(user, file);
 
         return userRepository.save(user);
+    }
+
+    public User updateUserAvatar(User userToUpdate, MultipartFile file) throws IOException {
+        userToUpdate.setAvatar(avatarService.save(file));
+        return userRepository.save(userToUpdate);
     }
 }

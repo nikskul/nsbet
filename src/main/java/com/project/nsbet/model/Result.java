@@ -1,16 +1,6 @@
 package com.project.nsbet.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Results")
@@ -20,18 +10,14 @@ public class Result {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "result_id")
     private Long id;
-    private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Team> teams;
+    @Column(name = "first_team_score")
+    private int firstTeamScore;
 
-    public Result(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    @Column(name = "second_team_score")
+    private int secondTeamScore;
 
-    public Result () { 
-        teams = new ArrayList<Team>();
+    public Result() {
     }
 
     public Long getId() {
@@ -42,19 +28,19 @@ public class Result {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public int getFirstTeamScore() {
+        return firstTeamScore;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstTeamScore(int firstTeamScore) {
+        this.firstTeamScore = firstTeamScore;
     }
 
-    public List<Team> getTeams() {
-        return teams;
+    public int getSecondTeamScore() {
+        return secondTeamScore;
     }
 
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
+    public void setSecondTeamScore(int secondTeamScore) {
+        this.secondTeamScore = secondTeamScore;
     }
 }

@@ -24,6 +24,7 @@ footer {
 
 img {
     object-fit: cover;
+    max-width: 100%;
 }
 
 .invalid-tooltip p {

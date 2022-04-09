@@ -1,18 +1,8 @@
 package com.project.nsbet.model;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Bets")
@@ -22,9 +12,10 @@ public class Bet {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "bet_id")
     private Long id;
+    private Boolean isBetWin;
 
     @Column(name = "bet_date")
-    private Date betDate;
+    private LocalDateTime betCreationDate;
 
     @Column(name = "bet_value")
     private BigDecimal betValue;
@@ -32,19 +23,20 @@ public class Bet {
     @Column(name = "bet_coefficient")
     private Float betCoefficient;
     
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "results_result_id")
-    private Result result;
+    @OneToOne
+    @JoinColumn(name = "matches_match_id")
+    private Match match;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "teams_result_id")
     private Team team;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "users_user_id", nullable=false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "users_user_id")
     private User user;
 
-    public Bet() { }
+    public Bet() {
+    }
 
     public Long getId() {
         return id;
@@ -54,12 +46,20 @@ public class Bet {
         this.id = id;
     }
 
-    public Date getBetDate() {
-        return betDate;
+    public Boolean getBetWin() {
+        return isBetWin;
     }
 
-    public void setBetDate(Date betDate) {
-        this.betDate = betDate;
+    public void setBetWin(Boolean betWin) {
+        isBetWin = betWin;
+    }
+
+    public LocalDateTime getBetCreationDate() {
+        return betCreationDate;
+    }
+
+    public void setBetCreationDate(LocalDateTime betCreationDate) {
+        this.betCreationDate = betCreationDate;
     }
 
     public BigDecimal getBetValue() {
@@ -78,12 +78,12 @@ public class Bet {
         this.betCoefficient = betCoefficient;
     }
 
-    public Result getResult() {
-        return result;
+    public Match getMatch() {
+        return match;
     }
 
-    public void setResult(Result result) {
-        this.result = result;
+    public void setMatch(Match match) {
+        this.match = match;
     }
 
     public Team getTeam() {

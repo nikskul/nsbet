@@ -1,18 +1,9 @@
 package com.project.nsbet.model;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Matches")
@@ -22,12 +13,21 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "match_id")
     private Long id;
-    private Date time;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Team> teams;
+    private LocalDateTime matchStartTime;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "first_team_id")
+    private Team firstTeam;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "second_team_id")
+    private Team secondTeam;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "results_result_id")
+    private Result result;
 
     public Match() {
-        teams = new ArrayList<Team>();
     }
 
     public Long getId() {
@@ -38,19 +38,35 @@ public class Match {
         this.id = id;
     }
 
-    public Date getTime() {
-        return time;
+    public LocalDateTime getMatchStartTime() {
+        return matchStartTime;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setMatchStartTime(LocalDateTime matchStartTime) {
+        this.matchStartTime = matchStartTime;
     }
 
-    public List<Team> getTeams() {
-        return teams;
+    public Team getFirstTeam() {
+        return firstTeam;
     }
 
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
+    public void setFirstTeam(Team firstTeam) {
+        this.firstTeam = firstTeam;
+    }
+
+    public Team getSecondTeam() {
+        return secondTeam;
+    }
+
+    public void setSecondTeam(Team secondTeam) {
+        this.secondTeam = secondTeam;
+    }
+
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
     }
 }
