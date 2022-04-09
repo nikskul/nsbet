@@ -1,15 +1,16 @@
 package com.project.nsbet.service;
 
 import com.project.nsbet.model.Match;
-import com.project.nsbet.model.Result;
 import com.project.nsbet.model.Team;
 import com.project.nsbet.repository.TeamRepository;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class TeamService {
 
     private final TeamRepository teamRepository;

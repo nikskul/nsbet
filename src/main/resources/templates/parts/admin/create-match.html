@@ -1,0 +1,45 @@
+<!--/*@thymesVar id="teams" type="com.project.nsbet.model.Team"*/-->
+<th:block th:fragment="create-match(teams)">
+    <h3 class="h3 mb-3 fw-normal">Создание матча</h3>
+    <form class="row g-3 needs-validation" action="/matches" method="post" enctype="utf-8">
+        <h5 class="h5 mb-3 fw-normal">Команда 1</h5>
+        <div class="col-md-6 position-relative">
+            <label for="validationTooltip01" class="form-label">Название команды <span
+                    class="text-danger">*</span>
+            </label>
+            <select type="text" class="form-control" id="validationTooltip01" name="firstTeamName" required>
+                <option th:each="team : ${teams}"
+                        th:text="${team.name}"
+                        th:label="${team.name}"
+                        th:value="${team}">
+                    Team name
+                </option>
+            </select>
+        </div>
+
+        <h5 class="h5 mb-3 fw-normal">Команда 2</h5>
+        <div class="col-md-6 position-relative">
+            <label for="validationTooltip02" class="form-label">Название команды <span
+                    class="text-danger">*</span>
+            </label>
+            <select type="text" class="form-control" id="validationTooltip02" name="secondTeamName" required>
+                <option th:each="team : ${teams}"
+                        th:text="${team.name}"
+                        th:label="${team.name}"
+                        th:value="${team}">
+                    Team name
+                </option>
+            </select>
+        </div>
+
+        <div class="col-md-6 position-relative">
+            <label for="validationTooltip03" class="form-label">Дата матча<span class="text-danger">*</span>
+            </label>
+            <input type="datetime-local" class="form-control" id="validationTooltip03" name="matchDateTime"
+                   required>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary mt-3 mb-3" type="submit">Создать матч</button>
+        </div>
+    </form>
+</th:block>

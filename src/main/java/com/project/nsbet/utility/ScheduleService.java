@@ -44,7 +44,7 @@ public class ScheduleService implements Runnable {
 
     @Override
     public void run() {
-        resultService.generateResultsAndCreditWinnings();
+        resultService.manageResultsAndCreditWinnings();
         log.info("Match results was generated!");
     }
 }

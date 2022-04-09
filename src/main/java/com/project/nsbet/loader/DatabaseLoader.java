@@ -3,8 +3,8 @@ package com.project.nsbet.loader;
 import com.project.nsbet.configuration.EncoderConfiguration;
 import com.project.nsbet.model.*;
 import com.project.nsbet.repository.*;
-import com.project.nsbet.service.AvatarService;
 import com.project.nsbet.service.MatchService;
+import com.project.nsbet.service.TeamService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -19,29 +19,20 @@ import java.util.Set;
 public class DatabaseLoader implements CommandLineRunner {
 
     private final RoleRepository roleRepository;
-    private final ResultRepository resultRepository;
     private final UserRepository userRepository;
-    private final TeamRepository teamRepository;
-    private final MatchRepository matchRepository;
-
+    private final TeamService teamService;
     private final MatchService matchService;
 
     private final EncoderConfiguration passwordEncoder;
 
     public DatabaseLoader(RoleRepository roleRepository,
-                          ResultRepository resultRepository,
                           UserRepository userRepository,
-                          AvatarRepository avatarRepository,
-                          AvatarService avatarService,
-                          TeamRepository teamRepository,
-                          MatchRepository matchRepository,
+                          TeamService teamService,
                           MatchService matchService,
                           EncoderConfiguration passwordEncoder) {
         this.roleRepository = roleRepository;
-        this.resultRepository = resultRepository;
         this.userRepository = userRepository;
-        this.teamRepository = teamRepository;
-        this.matchRepository = matchRepository;
+        this.teamService = teamService;
         this.matchService = matchService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -75,19 +66,19 @@ public class DatabaseLoader implements CommandLineRunner {
             userRepository.save(admin);
         }
 
-        if (teamRepository.count() == 0) {
-            teamRepository.save(new Team("Virtus.pro"));
-            teamRepository.save(new Team("Navi"));
-            teamRepository.save(new Team("BlackNinjas"));
-            teamRepository.save(new Team("TeamSpirit"));
-            teamRepository.save(new Team("Спартак"));
-            teamRepository.save(new Team("Зенит"));
-            teamRepository.save(new Team("Факел"));
-            teamRepository.save(new Team("Барселона"));
+        if (teamService.findAll().size() == 0) {
+            teamService.registerTeam("Virtus.pro");
+            teamService.registerTeam("Navi");
+            teamService.registerTeam("BlackNinjas");
+            teamService.registerTeam("TeamSpirit");
+            teamService.registerTeam("Спартак");
+            teamService.registerTeam("Зенит");
+            teamService.registerTeam("Факел");
+            teamService.registerTeam("Барселона");
         }
 
-        if (matchRepository.count() == 0) {
-            var teams = teamRepository.findAll();
+        if (matchService.findAll().size() == 0) {
+            var teams = teamService.findAll();
             for (int i = 0; i < teams.size() - 1; i += 2) {
                 matchService.registerMatch(
                         LocalDateTime.now().plusMinutes(20L + (i * 5L)),

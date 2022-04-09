@@ -3,12 +3,10 @@ package com.project.nsbet.service;
 import com.project.nsbet.configuration.EncoderConfiguration;
 import com.project.nsbet.exception.AlreadyExistException;
 import com.project.nsbet.exception.CredentialVerificationException;
-import com.project.nsbet.exception.NotFoundException;
 import com.project.nsbet.model.User;
 import com.project.nsbet.model.Wallet;
 import com.project.nsbet.repository.RoleRepository;
 import com.project.nsbet.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,6 +45,7 @@ public class UserService {
 
     private void validateUser(User newUser, String passwordVerification)
             throws CredentialVerificationException, AlreadyExistException {
+
         if (!newUser.getPassword().equals(passwordVerification))
             throw new CredentialVerificationException("Пароль и подтверждение пароля не совпадают.");
         if (userRepository.findByUsername(newUser.getUsername()).isPresent())
@@ -65,22 +64,28 @@ public class UserService {
         return user;
     }
 
-    private User setAvatarToUser(User user, MultipartFile file) throws IOException {
+    private User setAvatarToUser(User user, MultipartFile file)
+            throws IOException {
+
         user.setAvatar(avatarService.save(file));
         return user;
     }
 
     public User saveUser(User user, String passwordVerification, MultipartFile file)
             throws CredentialVerificationException, AlreadyExistException, IOException {
+
         validateUser(user, passwordVerification);
         initUser(user);
+
         if (!file.isEmpty())
             setAvatarToUser(user, file);
 
         return userRepository.save(user);
     }
 
-    public User updateUserAvatar(User userToUpdate, MultipartFile file) throws IOException {
+    public User updateUserAvatar(User userToUpdate, MultipartFile file)
+            throws IOException {
+
         userToUpdate.setAvatar(avatarService.save(file));
         return userRepository.save(userToUpdate);
     }

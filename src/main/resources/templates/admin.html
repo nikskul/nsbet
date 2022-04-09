@@ -8,46 +8,24 @@
 
 <!-- Start Of Content -->
 <main class="row container pt-5 pb-5">
-    <h1>Администрирование</h1>
-    <form class="row g-3 needs-validation" action="/matches" method="post" enctype="utf-8">
-        <h3 class="h3 mb-3 fw-normal">Создание матча</h3>
-
-        <h5 class="h5 mb-3 fw-normal">Команда 1</h5>
-        <div class="col-md-6 position-relative">
-            <label for="validationTooltip01" class="form-label">Название команды <span class="text-danger">*</span>
-            </label>
-            <select type="text" class="form-control" id="validationTooltip01" name="firstTeamName" required>
-                <option th:each="team : ${teams}"
-                        th:text="${team.name}"
-                        th:label="${team.name}"
-                        th:value="${team}">
-                    Team name
-                </option>
-            </select>
+    <h1 class="mb-3">Администрирование</h1>
+    <div class="accordion" id="adminAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#create-match"
+                        aria-expanded="true" aria-controls="collapseOne">
+                    Создание матчей
+                </button>
+            </h2>
+            <div id="create-match" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                 data-bs-parent="#adminAccordion">
+                <div class="accordion-body">
+                    <th:block th:include="parts/admin/create-match :: create-match(${teams})">Create Match including
+                    </th:block>
+                </div>
+            </div>
         </div>
-
-        <h5 class="h5 mb-3 fw-normal">Команда 2</h5>
-        <div class="col-md-6 position-relative">
-            <label for="validationTooltip02" class="form-label">Название команды <span class="text-danger">*</span>
-            </label>
-            <select type="text" class="form-control" id="validationTooltip02" name="secondTeamName" required>
-                <option th:each="team : ${teams}"
-                        th:text="${team.name}"
-                        th:label="${team.name}"
-                        th:value="${team}">
-                    Team name
-                </option>
-            </select>
-        </div>
-
-        <div class="col-md-6 position-relative">
-            <label for="validationTooltip03" class="form-label">Дата матча<span class="text-danger">*</span> </label>
-            <input type="datetime-local" class="form-control" id="validationTooltip03" name="matchDateTime" required>
-        </div>
-        <div class="col-12">
-            <button class="btn btn-primary mt-3 mb-3" type="submit">Создать матч</button>
-        </div>
-    </form>
+    </div>
 </main>
 <!-- End Of Content -->
 

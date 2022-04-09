@@ -87,7 +87,7 @@ public class ResultService {
     }
 
     @Transactional
-    public void generateResultsAndCreditWinnings() {
+    public void manageResultsAndCreditWinnings() {
         List<Match> alreadyStartedAndWithoutResultMatches = matchRepository.findAll()
                 .stream()
                 .filter(match -> match.getMatchStartTime().isBefore(LocalDateTime.now()))
