@@ -1,47 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="ru">
 <th:block th:fragment="create-match(teams)">
     <!--/*@thymesVar id="teams" type="java.util.List<com.project.nsbet.model.Team>"*/-->
     <!--/*@thymesVar id="team" type="com.project.nsbet.model.Team"*/-->
 
     <h3 class="h3 mb-3 fw-normal">Создание матча</h3>
-    <form class="row g-3 needs-validation" method="post" th:action="/matches">
-        <h5 class="h5 mb-3 fw-normal">Команда 1</h5>
-        <div class="col-md-6 position-relative">
-            <label for="validationTooltip01" class="form-label">Название команды <span
+    <form class="row g-3 needs-validation" method="post" action="/matches">
+        <div class="col-md-4 position-relative">
+            <h5 class="h5 mb-3 fw-normal">Команда 1</h5>
+            <label for="dataListTeam1" class="form-label">Название команды <span
                     class="text-danger">*</span>
             </label>
-            <select class="form-control"
-                    id="validationTooltip01" name="firstTeamName"
-                    required
-                    th:each="team : ${teams}" type="text">
-                <option th:text="${team.name}"
-                        th:label="${team.name}"
-                        th:value="${team.name}">
-                    Team name
-                </option>
-            </select>
-        </div>
-
-        <h5 class="h5 mb-3 fw-normal">Команда 2</h5>
-        <div class="col-md-6 position-relative">
-            <label for="validationTooltip02" class="form-label">Название команды <span
-                    class="text-danger">*</span>
-            </label>
-            <select type="text" class="form-control" id="validationTooltip02" name="secondTeamName" required>
+            <input type="text" list="dataListTeam1" name="firstTeamName" class="form-control">
+            <datalist id="dataListTeam1">
                 <option th:each="team : ${teams}"
-                        th:text="${team.name}"
-                        th:label="${team.name}"
-                        th:value="${team}">
-                    Team name
-                </option>
-            </select>
+                        th:value="${team.name}">
+            </datalist>
         </div>
 
-        <div class="col-md-6 position-relative">
+        <div class="col-md-4 offset-2 position-relative">
+            <h5 class="h5 mb-3 fw-normal">Команда 2</h5>
+            <label for="dataListTeam2" class="form-label">Название команды <span
+                    class="text-danger">*</span>
+            </label>
+            <input type="text" list="dataListTeam2" name="secondTeamName" class="form-control">
+            <datalist id="dataListTeam2">
+                <option th:each="team : ${teams}"
+                        th:value="${team.name}">
+            </datalist>
+        </div>
+
+        <div class="col-md-3 position-relative">
             <label for="validationTooltip03" class="form-label">Дата матча<span class="text-danger">*</span>
             </label>
             <input type="datetime-local" class="form-control" id="validationTooltip03" name="matchDateTime"
                    required>
         </div>
+        <!--/*@thymesVar id="addMatchError" type="java.lang.Exception"*/-->
+        <p th:if="${addMatchError != null}" th:text="${addMatchError}" class="text-danger">Error</p>
         <div class="col-12">
             <button class="btn btn-primary mt-3 mb-3" type="submit">Создать матч</button>
         </div>

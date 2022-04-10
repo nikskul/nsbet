@@ -1,11 +1,14 @@
 package com.project.nsbet.service;
 
 
+import com.project.nsbet.exception.AlreadyExistException;
 import com.project.nsbet.model.Match;
 import com.project.nsbet.model.Team;
 import com.project.nsbet.repository.MatchRepository;
+import com.project.nsbet.repository.TeamRepository;
 import com.project.nsbet.utility.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,14 +19,18 @@ import java.util.Optional;
 
 @Service
 public class MatchService {
-    
+
     public final MatchRepository matchRepository;
     public final ScheduleService scheduleService;
+    private final TeamRepository teamRepository;
 
     @Autowired
-    public MatchService(MatchRepository matchRepository, ScheduleService scheduleService) {
+    public MatchService(MatchRepository matchRepository,
+                        ScheduleService scheduleService,
+                        TeamRepository teamRepository) {
         this.matchRepository = matchRepository;
         this.scheduleService = scheduleService;
+        this.teamRepository = teamRepository;
     }
 
     public Optional<Match> findById(Long id) {
@@ -45,9 +52,21 @@ public class MatchService {
     }
 
     @Transactional
-    public void registerMatch(LocalDateTime matchDateTime, String firstTeamName, String secondTeamName) {
-        Team firstTeam = new Team(firstTeamName);
-        Team secondTeam = new Team(secondTeamName);
+    public void registerMatch(LocalDateTime matchDateTime, String firstTeamName, String secondTeamName) throws Exception {
+
+        if (matchDateTime.isBefore(LocalDateTime.now())) {
+            throw new Exception("Время начала матча не может быть прошедшим.");
+        }
+
+        if (firstTeamName.equals(secondTeamName))
+            throw new Exception("Имена команд не могут совпадать.");
+
+        Team firstTeam = teamRepository
+                .findByNameIgnoreCase(firstTeamName.trim())
+                .orElse(new Team(firstTeamName));
+        Team secondTeam = teamRepository
+                .findByNameIgnoreCase(secondTeamName.trim())
+                .orElse(new Team(secondTeamName));
 
         Match match = new Match();
         match.setMatchStartTime(matchDateTime);

@@ -9,7 +9,7 @@
     <!-- Start Of Content -->
     <main class="row container pt-5 pb-5">
         <h1>Ставки</h1>
-        <form class="row g-3 needs-validation" action="/bets" method="post" enctype="utf-8">
+        <form class="row g-3 needs-validation" action="/bets" method="post">
             <h5 class="h5 mb-3 fw-normal">Ставка на результат</h5>
 
             <div class="row text-center">
@@ -36,14 +36,14 @@
                         <span>x2</span>
                     </label>
                 </div>
-                <input class="d-none" name="matchId" th:value="${match.id}">
+                <input type="hidden" name="matchId" th:value="${match.id}">
             </div>
 
             <div class="row mt-3">
                 <label for="betValueInput" class="form-label">
                     Величина ставки<span class="text-danger">*</span>
                 </label>
-                <p th:if="${param.error}" class="text-danger">Ставка невозможна</p>
+                <p th:if="${error != null}" th:text="${error}" class="text-danger">Ставка невозможна</p>
                 <div class="input-group col-md-4" style="width: auto;">
                     <span class="input-group-text">₽</span>
                     <input type="text" class="form-control col-md-4" name="betValue" id="betValueInput" required>

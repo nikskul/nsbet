@@ -1,14 +1,18 @@
 package com.project.nsbet.controller;
 
+import com.project.nsbet.exception.BadRequestException;
+import com.project.nsbet.exception.NotEnoughMoneyException;
 import com.project.nsbet.exception.NotFoundException;
 import com.project.nsbet.model.Bet;
 import com.project.nsbet.model.Match;
 import com.project.nsbet.model.User;
 import com.project.nsbet.service.BetService;
 import com.project.nsbet.service.MatchService;
+import com.project.nsbet.service.TeamService;
 import com.project.nsbet.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -24,7 +28,7 @@ public class BetController {
     private final BetService betService;
 
     @Autowired
-    public BetController(UserService userService, MatchService matchService, BetService betService) {
+    public BetController(UserService userService, MatchService matchService, BetService betService, TeamService teamService) {
         this.userService = userService;
         this.matchService = matchService;
         this.betService = betService;
@@ -54,35 +58,28 @@ public class BetController {
     /**
      * Создает ставку
      *
-     * @param matchId    ИД матча
+     * @param matchId    Матч
      * @param userChoice Выбор исхода
      * @param betValue   Размер ставки
      * @return String
      */
     @PostMapping("/bets")
-    public String addBet(Map<String, Object> model,
+    public String addBet(Model model,
                          Long matchId,
                          String userChoice,
                          String betValue
     ) {
         User currentUser = userService.getCurrentUser();
-        Match match;
-        try {
-            match = matchService.findById(matchId).orElseThrow(
-                    () -> new NotFoundException("Матч с id:" + matchId + " не существует.")
-            );
-        } catch (NotFoundException e) {
-            model.put("matchNotFoundException", e.getMessage());
-            return "match";
-        }
+        model.addAttribute("user", currentUser);
 
         try {
-            betService.registerBet(match, currentUser, userChoice, betValue);
+            betService.registerBet(matchId, currentUser, userChoice, betValue);
         } catch (NotFoundException e) {
-            model.put("matchNotFoundException", e.getMessage());
-            return "match";
-        } catch (Exception e) {
-            model.put("notValidData", e.getMessage());
+            model.addAttribute("cause", e.getMessage());
+            return "redirect:/404";
+        } catch (BadRequestException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("match", matchService.findById(matchId).get());
             return "match";
         }
 

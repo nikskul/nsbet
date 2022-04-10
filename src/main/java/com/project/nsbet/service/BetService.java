@@ -1,5 +1,8 @@
 package com.project.nsbet.service;
 
+import com.project.nsbet.exception.BadRequestException;
+import com.project.nsbet.exception.NotEnoughMoneyException;
+import com.project.nsbet.exception.NotFoundException;
 import com.project.nsbet.model.Bet;
 import com.project.nsbet.model.Match;
 import com.project.nsbet.model.User;
@@ -9,37 +12,45 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Service
 public class BetService {
 
     private final BetRepository betRepository;
 
+    private final MatchService matchService;
+
     @Autowired
-    public BetService(BetRepository betRepository) {
+    public BetService(BetRepository betRepository, MatchService matchService) {
         this.betRepository = betRepository;
+        this.matchService = matchService;
     }
 
-    private void validateBetValueOrThrowException(User user, String betValue) throws Exception {
+    private void validateBetValueOrThrowException(User user, String betValue) throws NotEnoughMoneyException {
         double value;
-        try {
-            value = Double.parseDouble(betValue);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+
+        value = Double.parseDouble(betValue);
 
         if (value > user.getWallet().getBalance().doubleValue()
                 || value <= 0) {
-            throw new Exception("Не достаточно средств. Или ставка не корректна");
+            throw new NotEnoughMoneyException("Не достаточно средств. Или ставка не корректна");
         }
     }
 
     @Transactional
-    public void registerBet(Match match,
+    public void registerBet(Long matchId,
                             User user,
                             String userChoice,
                             String betValue
-    ) throws Exception {
+    ) throws NotFoundException, BadRequestException {
+
+        Match match = matchService.findById(matchId).orElseThrow(
+                () -> new NotFoundException("Матч с id:" + matchId + " не существует.")
+        );
+
+        if (match.getMatchStartTime().isBefore(LocalDateTime.now()))
+            throw new BadRequestException("Матч уже начался.");
 
         validateBetValueOrThrowException(user, betValue);
 
