@@ -9,16 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Приложение осуществляет прием ставок от пользователей.
  * 
  * @author Никита Скулыбердин
- * @version 1.1
+ * @version 1.8
  */
 
 @SpringBootApplication
 public class NsbetApplication {
-
-	
-	/** 
-	 * Точка входа в Spring приложение
-	 */
+	//TODO: Пополнение кошелька
 	public static void main(String[] args) {
 		SpringApplication.run(NsbetApplication.class, args);
 	}

@@ -13,6 +13,10 @@
     <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap-reboot.min.css}">
     <!--/ Bootstrap  -->
 
+    <!--  MagicCss  -->
+    <link rel="stylesheet" th:href="@{/main/css/magic.min.css}">
+    <!--/  MagicCss  -->
+
     <!-- Custom -->
     <link rel="stylesheet" th:href="@{/main/css/normalize.css}">
     <link rel="stylesheet" th:href="@{/main/css/main.css}">
@@ -23,7 +27,7 @@
 
 
 <body>
-<header class="container-fluid p-3 bg-dark text-white" th:fragment="header">
+<header id="header" class="container-fluid p-3 bg-dark text-white" th:fragment="header">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
             <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">

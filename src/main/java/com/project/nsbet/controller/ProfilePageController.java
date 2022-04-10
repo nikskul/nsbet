@@ -2,7 +2,9 @@ package com.project.nsbet.controller;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
+import com.project.nsbet.model.Bet;
 import com.project.nsbet.model.User;
 import com.project.nsbet.service.UserService;
 
@@ -35,6 +37,19 @@ public class ProfilePageController {
         User currentUser = userService.getCurrentUser();
         if (currentUser != null)
             model.put("user", currentUser);
+
+        long winBets = currentUser.getBets()
+                .stream()
+                .map(Bet::getBetWin)
+                .filter(Optional::isPresent)
+                .filter(Optional::get)
+                .count();
+
+        long loseBets = currentUser.getBets().size() - winBets;
+
+        model.put("winBets", winBets);
+        model.put("loseBets", loseBets);
+
         return "profile";
     }
 

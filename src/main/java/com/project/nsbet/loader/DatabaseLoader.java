@@ -81,7 +81,7 @@ public class DatabaseLoader implements CommandLineRunner {
             var teams = teamService.findAll();
             for (int i = 0; i < teams.size() - 1; i += 2) {
                 matchService.registerMatch(
-                        LocalDateTime.now().plusMinutes(20L + (i * 5L)),
+                        LocalDateTime.now().plusMinutes(5L + (i * 5L)),
                         teams.get(i).getName(),
                         teams.get(i + 1).getName()
                 );

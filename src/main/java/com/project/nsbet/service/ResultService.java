@@ -20,11 +20,14 @@ public class ResultService {
     private final MatchRepository matchRepository;
     private final BetRepository betRepository;
 
+    private final TeamService teamService;
+
     public ResultService(MatchRepository matchRepository,
-                         BetRepository betRepository
-    ) {
+                         BetRepository betRepository,
+                         TeamService teamService) {
         this.matchRepository = matchRepository;
         this.betRepository = betRepository;
+        this.teamService = teamService;
     }
 
     private Optional<Team> getMatchWinnerTeam(Match match) {
@@ -95,6 +98,7 @@ public class ResultService {
                 .collect(Collectors.toList());
         for (Match match : alreadyStartedAndWithoutResultMatches) {
             generateMatchResultsAndSave(match);
+            teamService.updateTeamInfoFromEndedMatch(match);
             updateMatchBetting(match);
         }
     }

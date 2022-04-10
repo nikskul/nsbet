@@ -3,6 +3,7 @@ package com.project.nsbet.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 @Table(name = "Bets")
@@ -46,8 +47,8 @@ public class Bet {
         this.id = id;
     }
 
-    public Boolean getBetWin() {
-        return isBetWin;
+    public Optional<Boolean> getBetWin() {
+        return Optional.ofNullable(isBetWin);
     }
 
     public void setBetWin(Boolean betWin) {

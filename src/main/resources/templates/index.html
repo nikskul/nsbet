@@ -9,43 +9,8 @@
   <!-- Start Of Content -->
   <main class="row container pt-5 pb-5">
     <h1>Главная страница</h1>
-    <section class="row mt-5">
-      <div th:each="match : ${matches}" class="card m-3" style="max-width: 20rem;">
-        <div class="card-body">
-
-          <h5 class="card-title">
-            <span th:text="${match.firstTeam.name}">TEAM 1</span> vs.
-            <span th:text="${match.secondTeam.name}">TEAM 2</span>
-          </h5>
-
-          <hr />
-
-          <p th:text="${#temporals.format(match.matchStartTime,'dd.MM.yyyy HH:mm')}" class="card-text">01.02.2001 16:56</span></p>
-
-          <a th:if="${!match.matchStartTime.isBefore(#temporals.createNow())}" th:href="'/matches/' + ${match.id}"
-            class="btn btn-primary">Открыть матч</a>
-
-          <th:block th:if="${match.result} != null">
-            <h6 th:if="${match.result.firstTeamScore > match.result.secondTeamScore}">
-              Результат:
-              <span class="badge bg-success">Победа</span>
-              <span th:text="${match.firstTeam.name}">TEAM</span>
-            </h6>
-
-            <h6 th:if="${match.result.firstTeamScore < match.result.secondTeamScore}">
-              Результат:
-              <span class="badge bg-success">Победа</span>
-              <span th:text="${match.secondTeam.name}">TEAM</span>
-            </h6>
-
-            <h6 th:if="${match.result.firstTeamScore == match.result.secondTeamScore}">
-              Результат:
-              <span class="badge bg-secondary">Ничья</span>
-            </h6>
-          </th:block>
-
-        </div>
-      </div>
+    <section class="row mt-5 justify-content-around">
+      <th:block th:include="parts/main/matches :: matches(${matches})">List of matches</th:block>
     </section>
   </main>
   <!-- End Of Content -->

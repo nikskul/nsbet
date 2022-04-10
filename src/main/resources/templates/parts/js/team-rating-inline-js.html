@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<script th:fragment="team-rating-js(match, canvasId)" th:inline="javascript">
+    console.log([[${match.firstTeam.name}]] + ' ' + [[${match.secondTeam.name}]])
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        let labels = [
+            [[${match.firstTeam.name}]],
+            [[${match.secondTeam.name}]]
+        ]
+        let data = [
+            [[${match.firstTeam.rating}]],
+            [[${match.secondTeam.rating}]]
+        ]
+
+        new Chart(document.getElementById([[${canvasId}]]).getContext('2d'), {
+            type: 'polarArea',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    min: -0.5,
+                    backgroundColor: [
+                        'rgba(71, 144, 245, .65)',
+                        'rgba(245, 163, 132, .65)'
+                    ],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                scales: {
+                    r: {
+                        min: -1
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Рейтинг команд',
+                        color: '#000000',
+                        padding: {
+                            bottom: 16
+                        },
+                        font: {
+                            family: "system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial",
+                            size: 14
+                        }
+                    }
+                }
+            }
+        });
+    })
+
+</script>

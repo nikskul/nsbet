@@ -13,7 +13,7 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Команда</th>
+            <th scope="col">Ставка на</th>
             <th scope="col">Сумма</th>
             <th scope="col">Коэффициент</th>
             <th scope="col">Дата ставки</th>
@@ -24,22 +24,22 @@
         <tr th:each="bet : ${bets}">
             <td th:text="${bet.id}">#id</td>
             <td th:text="${bet.team == null ? 'Ничья' : bet.team.name}">Team name</td>
-            <td th:text="${bet.betValue}">15000</td>
+            <td th:text="${#numbers.formatCurrency(bet.betValue)}">15000</td>
             <td th:text="${bet.betCoefficient}">1.25</td>
             <td th:text="${#temporals.format(bet.betCreationDate, 'dd.MM.yyyy HH:MM')}">01.01.2000 00:00</td>
             <th:block>
-                <td th:if="${bet.betWin == null}">
+                <td th:if="${bet.betWin.isEmpty()}">
                     <div th:text="'Ожидание результата'"
                          class="badge bg-secondary">Ожидание результата
                     </div>
                 </td>
-                <th:block th:if="${bet.betWin != null}">
-                    <td th:if="${#bools.isTrue(bet.betWin)}">
+                <th:block th:if="${bet.betWin.isPresent()}">
+                    <td th:if="${#bools.isTrue(bet.betWin.get())}">
                         <div th:text="'Выигрыш'"
                              class="badge bg-success">Выигрыш
                         </div>
                     </td>
-                    <td th:if="${#bools.isFalse(bet.betWin)}">
+                    <td th:if="${#bools.isFalse(bet.betWin.get())}">
                         <div th:text="'Проигрыш'"
                              class="badge bg-danger">Проигрыш
                         </div>

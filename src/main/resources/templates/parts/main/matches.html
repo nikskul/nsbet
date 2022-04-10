@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="ru">
+<th:block th:fragment="matches(matches)">
+    <div th:each="match : ${matches}" class="card m-3 text-center" style="max-width: 20rem;">
+        <div class="card-body">
+            <div class="col d-flex flex-column justify-content-center" style="max-width: 300px;">
+                <canvas th:id="${'teamRating' + match.id}" ></canvas>
+            </div>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                <span th:text="${match.firstTeam.name}">TEAM 1</span> vs.
+                <span th:text="${match.secondTeam.name}">TEAM 2</span>
+            </h5>
+
+            <hr/>
+
+            <th:block th:if="${!match.matchStartTime.isBefore(#temporals.createNow())}">
+                <p th:text="${#temporals.format(match.matchStartTime,'dd.MM.yyyy HH:mm')}" class="card-text">01.02.2001
+                    16:56</span></p>
+
+                <a  th:href="'/matches/' + ${match.id}"
+                    class="btn btn-primary">Открыть матч</a>
+            </th:block>
+
+
+            <th:block th:if="${match.result} != null">
+                <h6 th:if="${match.result.firstTeamScore > match.result.secondTeamScore}">
+                    Результат:
+                    <span class="badge bg-success">Победа</span>
+                    <span th:text="${match.firstTeam.name}">TEAM</span>
+                </h6>
+
+                <h6 th:if="${match.result.firstTeamScore < match.result.secondTeamScore}">
+                    Результат:
+                    <span class="badge bg-success">Победа</span>
+                    <span th:text="${match.secondTeam.name}">TEAM</span>
+                </h6>
+
+                <h6 th:if="${match.result.firstTeamScore == match.result.secondTeamScore}">
+                    Результат:
+                    <span class="badge bg-secondary">Ничья</span>
+                </h6>
+            </th:block>
+        </div>
+        <script th:replace="~{parts/js/team-rating-inline-js :: team-rating-js(${match}, ${'teamRating' + match.id})}">
+            // Match Team Rating Chart.js
+        </script>
+    </div>
+
+</th:block>

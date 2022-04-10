@@ -39,6 +39,8 @@
         </div>
         <!--/*@thymesVar id="addMatchError" type="java.lang.Exception"*/-->
         <p th:if="${addMatchError != null}" th:text="${addMatchError}" class="text-danger">Error</p>
+        <!--/*@thymesVar id="addMatchSuccess" type="java.lang.String"*/-->
+        <p th:if="${addMatchSuccess != null}" th:text="${addMatchSuccess}" class="text-success">Error</p>
         <div class="col-12">
             <button class="btn btn-primary mt-3 mb-3" type="submit">Создать матч</button>
         </div>

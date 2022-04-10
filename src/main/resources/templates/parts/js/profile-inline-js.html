@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<script th:fragment="profile-stat-js(winBets, loseBets)" th:inline="javascript">
+    const data = [
+        [[${winBets}]],
+        [[${loseBets}]]
+    ];
+    const ctx = document.getElementById('betInfos').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Победы', 'Поражения'],
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    '#3DFF6E',
+                    '#DB1F2A'
+                ],
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        color: '#000000',
+                        font: {
+                            family: "system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial",
+                        }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Статистика',
+                    color: '#000000',
+                    padding: {
+                        bottom: 16
+                    },
+                    font: {
+                        family: "system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial",
+                        size: 24
+                    }
+                }
+            }
+        }
+    });
+</script>

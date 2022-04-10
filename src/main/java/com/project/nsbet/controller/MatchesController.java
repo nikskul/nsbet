@@ -89,6 +89,7 @@ public class MatchesController {
             model.addAttribute("teams", teams);
             return "admin";
         }
-        return "redirect:/";
+        model.addAttribute("addMatchSuccess", "Матч был успешно создан");
+        return "admin";
     }
 }
