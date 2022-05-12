@@ -17,7 +17,7 @@
 docker run --name bet-bd -p 5432:5432 -e POSTGRES_DB=nsbet -e POSTGRES_PASSWORD=root -d postgres
 ```
 ### Запуск сервера
-1. Запустить `nsbet-0.0.1-SNAPSHOT.jar`. 
+1. Запустить `sport-betting.jar`. 
 2. Открыть в браузере `localhost:8081`
 ### Пользователь 
 Стандартный пользователь с правам администратора.
