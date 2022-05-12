@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <script th:fragment="team-rating-js(match, canvasId)" th:inline="javascript">
-    console.log([[${match.firstTeam.name}]] + ' ' + [[${match.secondTeam.name}]])
-
     document.addEventListener("DOMContentLoaded", function () {
 
         let labels = [

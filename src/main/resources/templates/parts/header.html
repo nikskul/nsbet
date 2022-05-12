@@ -29,11 +29,6 @@
 <body>
 <header id="header" class="container-fluid p-3 bg-dark text-white" th:fragment="header">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-                <use xlink:href="#bootstrap"></use>
-            </svg>
-        </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
             <li><a href="/" class="nav-link px-2 text-white">Главная</a></li>
@@ -47,7 +42,7 @@
 
         <!--/*@thymesVar id="user" type="com.project.nsbet.model.User"*/-->
         <div th:if="${user} != null" sec:authorize="isAuthenticated()"
-             class="dropdown justify-content-center text-end row">
+             class="dropdown me-0 justify-content-center text-end row">
             <p th:text="${#numbers.formatCurrency(user.wallet.balance)}"
                class="col-auto m-0 pt-1">
                 1 000 000 ₽
@@ -64,12 +59,17 @@
                      class="rounded-circle">
                 <img th:case="true"
                      th:src="'/avatars/' + ${user.getAvatar().getId()}"
+                     src="../../static/images/default-avatar.jpg"
                      alt="mdo" width="32" height="32"
                      class="rounded-circle">
             </button>
             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser">
                 <li><a class="dropdown-item" href="/profile">Профиль</a></li>
                 <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" href="/admin">Настройки</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li sec:authorize="isAuthenticated()"><a class="dropdown-item" href="/wallet">Кошелек</a></li>
                 <li>
                     <hr class="dropdown-divider">
                 </li>

@@ -14,7 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class NsbetApplication {
-	//TODO: Пополнение кошелька
 	public static void main(String[] args) {
 		SpringApplication.run(NsbetApplication.class, args);
 	}

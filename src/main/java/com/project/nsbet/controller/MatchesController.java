@@ -34,12 +34,6 @@ public class MatchesController {
         this.teamService = teamService;
     }
 
-    @GetMapping("/matches")
-    public String getPage() {
-        // TODO: Redirect to 404
-        return "redirect:/";
-    }
-
     /**
      * Отображает страницу матча
      *
