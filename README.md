@@ -21,9 +21,14 @@ docker run --name bet-bd -p 5432:5432 -e POSTGRES_DB=nsbet -e POSTGRES_PASSWORD=
 2. Открыть в браузере `localhost:8081`
 ### Пользователь 
 Стандартный пользователь с правам администратора.
-```json
-login: nikita
-password: nikita
 ```
+  login: nikita
+  password: nikita
+```
+## Скриншоты
+![Главная страница](screenshots/img.png)
+![img_1.png](screenshots/img_1.png)
+![img_2.png](screenshots/img_2.png)
+![img_4.png](screenshots/img_4.png)
 
 
